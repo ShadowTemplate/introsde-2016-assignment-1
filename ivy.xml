@@ -1,0 +1,9 @@
+<ivy-module version="2.0">
+    <info organisation="introsde-2016" module="assignment-1"/>
+    <dependencies>
+        <dependency org="com.sun.xml.bind" name="jaxb-impl" rev="2.2.11"/>
+        <dependency org="com.sun.xml.bind" name="jaxb-xjc" rev="2.2.7"/>
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.8.4"/>
+        <dependency org="com.fasterxml.jackson.module" name="jackson-module-jaxb-annotations" rev="2.8.4"/>
+    </dependencies>
+</ivy-module>
