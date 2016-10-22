@@ -5,6 +5,7 @@
          xsi:schemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd"
          basedir=".">
 
+    <!-- Ant properties (software versions, workspace paths, etc.) -->
     <property name="ivy.install.version" value="2.4.0"/>
     <property name="ivy.jar.dir" value="${basedir}/ivy"/>
     <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/>
@@ -25,6 +26,7 @@
         </fileset>
     </path>
 
+    <!-- Targets required to download and configure Ivy -->
     <target name="download-ivy" unless="skip.download" description="Download ivy">
         <mkdir dir="${ivy.jar.dir}"/>
         <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
@@ -42,6 +44,7 @@
         <ivy:retrieve pattern="${lib.dir}/[artifact]-[type]-[revision].[ext]"/>
     </target>
 
+    <!-- Other project targets -->
     <target name="clean">
         <delete dir="${build.dir}"/>
     </target>
@@ -59,6 +62,7 @@
         </copy>
     </target>
 
+    <!-- Target responsible of running the evaluation code -->
     <target name="execute.evaluation" depends="compile" description="Run evaluation">
         <java classname="health.Evaluator" classpath="${build.dir}">
             <classpath>

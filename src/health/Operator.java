@@ -1,13 +1,11 @@
 package health;
 
-import javax.xml.xpath.XPathExpressionException;
-
 public enum Operator {
     EQUAL,
     GREATER,
     LOWER;
 
-    public String symbol() throws XPathExpressionException {
+    public String symbol() throws RuntimeException {
         switch (this) {
             case EQUAL:
                 return "=";
@@ -16,7 +14,7 @@ public enum Operator {
             case LOWER:
                 return "<";
             default:
-                throw new XPathExpressionException("Invalid operator: " + this.toString());
+                throw new RuntimeException("Invalid operator: " + this.toString());
         }
     }
 }

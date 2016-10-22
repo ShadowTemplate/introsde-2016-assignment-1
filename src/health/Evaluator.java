@@ -38,17 +38,17 @@ public class Evaluator {
 
     public static void main(String[] args) {
         try {
-            Document doc = getDocument("people.xml");
+            Document document = getDocument("people.xml");
             XPath xpath = XPathFactory.newInstance().newXPath();
 
             System.out.println("People list:");
-            printPeople(doc, xpath);
+            printPeople(document, xpath);
 
             System.out.println("\nHealth profile of person 0005:");
-            printHealthProfile(doc, xpath, "0005");
+            printHealthProfile(document, xpath, "0005");
 
             System.out.println("\nPeople with weight>90:");
-            searchByWeight(doc, xpath, Operator.GREATER, 90d);
+            searchByWeight(document, xpath, Operator.GREATER, 90d);
 
             String fileName = "generated_people";
             System.out.println("\nMarshalling random people to XML...");
@@ -65,45 +65,47 @@ public class Evaluator {
         }
     }
 
-    private static Document getDocument(String filename) throws IOException, SAXException, ParserConfigurationException {
+    private static Document getDocument(String fileName) throws IOException, SAXException, ParserConfigurationException {
         DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
         domFactory.setNamespaceAware(true);
         DocumentBuilder builder = domFactory.newDocumentBuilder();
-        return builder.parse(filename);
+        return builder.parse(fileName);
     }
 
 
-    public static Double getWeight(Document doc, XPath xPath, String personId) throws XPathExpressionException {
+    private static Double getWeight(Document doc, XPath xPath, String personId) throws XPathExpressionException {
         XPathExpression expr = xPath.compile("/people/person[@id='" + personId + "']/healthprofile/weight");
         Node node = (Node) expr.evaluate(doc, XPathConstants.NODE);
         return Double.parseDouble(node.getTextContent());
     }
 
-    public static Double getHeight(Document doc, XPath xPath, String personId) throws XPathExpressionException {
+    private static Double getHeight(Document doc, XPath xPath, String personId) throws XPathExpressionException {
         XPathExpression expr = xPath.compile("/people/person[@id='" + personId + "']/healthprofile/height");
         Node node = (Node) expr.evaluate(doc, XPathConstants.NODE);
         return Double.parseDouble(node.getTextContent());
     }
 
-    public static void printPeople(Document doc, XPath xPath) throws XPathExpressionException {
+    private static void printPeople(Document doc, XPath xPath) throws XPathExpressionException {
         XPathExpression expr = xPath.compile("//person");
         NodeList nodeList = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
         printNodeInfo(nodeList);
     }
 
-    public static void printHealthProfile(Document doc, XPath xPath, String personId) throws XPathExpressionException {
+    private static void printHealthProfile(Document doc, XPath xPath, String personId) throws XPathExpressionException {
         XPathExpression expr = xPath.compile("/people/person[@id='" + personId + "']/healthprofile");
         Node node = (Node) expr.evaluate(doc, XPathConstants.NODE);
         System.out.println(node.getNodeName() + ": " + node.getTextContent());
     }
 
-    public static void searchByWeight(Document doc, XPath xPath, Operator operator, double weight) throws XPathExpressionException {
+    private static void searchByWeight(Document doc, XPath xPath, Operator operator, double weight)
+            throws XPathExpressionException {
         XPathExpression expr = xPath.compile("//healthprofile[weight" + operator.symbol() + weight + "]/parent::person");
         NodeList nodeList = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
         printNodeInfo(nodeList);
     }
 
-    private static void runXMLMarshalling(int peopleNumber, String outputFile) throws JAXBException, DatatypeConfigurationException {
+    private static void runXMLMarshalling(int peopleNumber, String outputFile) throws JAXBException,
+            DatatypeConfigurationException {
         People people = generateRandomPeople(peopleNumber);
         Marshaller marshaller = JAXBContext.newInstance(People.class).createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -111,13 +113,13 @@ public class Evaluator {
         marshaller.marshal(people, System.out);
     }
 
-    private static void runJSONMarshalling(int peopleNumber, String outputFile) throws JAXBException, DatatypeConfigurationException, IOException {
+    private static void runJSONMarshalling(int peopleNumber, String outputFile) throws JAXBException,
+            DatatypeConfigurationException, IOException {
         People people = generateRandomPeople(peopleNumber);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JaxbAnnotationModule());
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         mapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
-
         String result = mapper.writeValueAsString(people);
         System.out.println(result);
         mapper.writeValue(new File(outputFile), people);
@@ -138,7 +140,8 @@ public class Evaluator {
             People.Person.Healthprofile newHealthProfile = factory.createPeoplePersonHealthprofile();
             newHealthProfile.setLastupdate(gregorianCalendar);
             newHealthProfile.setWeight(60 + RANDOM.nextInt(20));
-            newHealthProfile.setHeight(1.60 + RANDOM.nextInt(50)/100);
+            double randomValue = 1.60d + (0.10d + (0.40d - 0.10d) * RANDOM.nextDouble());
+            newHealthProfile.setHeight(Math.round(randomValue * 100.0) / 100.0);
             newHealthProfile.setBmi(20 + RANDOM.nextInt(15));
             newPerson.setHealthprofile(newHealthProfile);
             people.getPerson().add(newPerson);
