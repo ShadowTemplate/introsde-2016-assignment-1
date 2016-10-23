@@ -36,7 +36,7 @@ According to the request, the *main* method in the *Evaluator* class completes t
     ```
     /people/person[@id=input_id]/healthprofile
     ```
-3. *searchByWeight*: finds people in *people.xml* satisfying a user-defined condition on their weight by evaluating the XPath expression   
+3. *searchByWeight*: finds people in *people.xml* satisfying a user-defined boolean condition on their weight by evaluating the XPath expression   
 
     ```
     //healthprofile[weight input_operator input_value]/parent::person
@@ -53,9 +53,9 @@ Some Ant tasks are defined inside *build.xml*. An overview of what each task doe
 * *install-ivy* (*download-ivy*): adds Ivy jar to the working directory
 * *resolve* (*install-ivy*): downloads all the dependencies specified in the *ivy.xml* configuration file into the working directory
 * *clean*: deletes the compilation folder from the workspace
-* *init* (*install-ivy*, *resolve*, *clean*): initializes the workspace 
+* *init* (*resolve*, *clean*): initializes the workspace 
 * *compile* (*init*): compiles the code 
-* *execute.evaluation*: runs the *main* method contained into the *Evaluator* class and described above
+* *execute.evaluation* (*compile*): runs the *main* method contained into the *Evaluator* class and described above
 
 
 ## How to run
