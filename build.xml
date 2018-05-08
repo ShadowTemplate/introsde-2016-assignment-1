@@ -49,7 +49,7 @@
         <delete dir="${build.dir}"/>
     </target>
 
-    <target name="init" depends="install-ivy, resolve, clean" description="Init workspace">
+    <target name="init" depends="resolve, clean" description="Init workspace">
         <mkdir dir="${build.dir}"/>
     </target>
 
