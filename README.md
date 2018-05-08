@@ -3,7 +3,8 @@
 **Introduction to Service Design and Engineering | University of Trento**
 
 This file aims to provide a short documentation for the first course assignment.  
-The original instructions can be found [here](https://sites.google.com/a/unitn.it/introsde_2016-17/lab-sessions/assignments/assignment-1).
+The original instructions can be found [here](
+https://rawgit.com/ShadowTemplate/introsde-2016-assignment-1/master/instructions/Assignment%2001%3A%20Reading_Writing%20objects%20to%20and%20from%20XML%20and%20JSON%20-%20introSDE_2016_17.htm).
 
 ## Project structure
 
